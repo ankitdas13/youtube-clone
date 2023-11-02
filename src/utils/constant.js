@@ -13,3 +13,5 @@ export const YOUTUBE_VIDEO_DETAILS = "https://youtube.googleapis.com/youtube/v3/
 export const YOUTUBE_CHANNELS = "https://youtube-search-and-download.p.rapidapi.com/channel/about?id="
 
 export const MAX_RESULT = "15"
+
+export const DARK_MODE_CODE = "#0f0f0f"

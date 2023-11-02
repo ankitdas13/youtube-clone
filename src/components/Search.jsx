@@ -45,7 +45,7 @@ const Search = () => {
         <>
         <div className="flex justify-center col-span-5 p-2 max-sm:hidden">
             <input 
-              className="rounded-l-full bg-slate-100 w-1/2 border border-gray-400 pl-5" 
+              className="rounded-l-full bg-slate-100 w-1/2 border border-gray-400 pl-5 dark:bg-zinc-400" 
               name="search" type="text" 
               onChange={handleOnChange} 
               autoComplete='off'
@@ -53,7 +53,7 @@ const Search = () => {
               onFocus={()=>{setFocusSearch(true)}}
               onBlur={()=>{ setTimeout(()=> setFocusSearch(false), 200)}}
             />
-            <div className="flex rounded-r-full bg-slate-100 px-5 border border-gray-400">
+            <div className="flex rounded-r-full bg-slate-100 px-5 border border-gray-400 dark:bg-zinc-400">
                 <button onClick={handleOnClick}><AiOutlineSearch size={25}/></button>
             </div>
            {

@@ -1,10 +1,12 @@
 import VideoCard from "./VideoCard"
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import useAllVideos from "../hook/useAllVideos"
 import SkeletonVideoCard from "./SkeletonVideoCard"
+import { useSelector } from "react-redux"
 
 const VideoContainer = () => {
-    const [pageNum, setPageNum] = useState("")
+  const categoryId = useSelector(store => store.sidebarCategory.category)
+    const [pageNum, setPageNum] = useState(null)
     const {
         result,
         isLoading,
@@ -13,6 +15,10 @@ const VideoContainer = () => {
         hasNextPageToken,
         hasNextPage
     } = useAllVideos(pageNum)
+
+    useEffect(()=>{
+      setPageNum(null)
+    },[categoryId])
     
     const intObersver = useRef()
 
@@ -23,8 +29,6 @@ const VideoContainer = () => {
 
       intObersver.current = new IntersectionObserver(videos=>{
         if(videos[0].isIntersecting && hasNextPage){
-           console.log('oberserving',hasNextPageToken)
-           console.log(hasNextPageToken)
            setPageNum(hasNextPageToken)
         }
       })
@@ -33,7 +37,6 @@ const VideoContainer = () => {
 
     },[isLoading,hasNextPage])
 
-    
     const content = result.map((video,i)=>{
         if(result.length === i + 1){
            return <VideoCard key={i} data={video} ref={lastRefObserver}/>
