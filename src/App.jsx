@@ -8,7 +8,7 @@ import { DARK_MODE_CODE } from './utils/constant'
 function App() {
   return (
     <>
-      <div className={`fixed top-0 w-full dark:bg-[${DARK_MODE_CODE}]`}><Header/></div>
+      <div className={`fixed top-0 w-full bg-white dark:bg-[${DARK_MODE_CODE}]`}><Header/></div>
       <div className='mt-20'><Body/></div>
     </>
   )
