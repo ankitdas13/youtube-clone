@@ -1,6 +1,6 @@
 import SidebarMenu from "./SidebarMenu"
 
-const Sidebar=()=>{
+const Sidear=()=>{
     return (
         <div>
             <SidebarMenu/>
