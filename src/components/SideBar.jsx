@@ -1,6 +1,6 @@
 import SidebarMenu from "./SidebarMenu"
 
-const Sidear=()=>{
+const SideBar=()=>{
     return (
         <div>
             <SidebarMenu/>
@@ -8,4 +8,4 @@ const Sidear=()=>{
     )
 }
 
-export default Sidebar
+export default SideBar
