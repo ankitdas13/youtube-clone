@@ -1,5 +1,5 @@
 import MainContainer from "./MainContainer"
-import SideBar from "./Sidebar"
+import SideBar from "./SideBar"
 import { Outlet } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { DARK_MODE_CODE } from "../utils/constant"
