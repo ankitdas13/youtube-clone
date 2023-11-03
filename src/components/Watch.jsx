@@ -41,10 +41,10 @@ const Watch = () => {
   const fetchVideoDetails = async (query) => {
     const data = await fetch(YOUTUBE_VIDEO_DETAILS + query)
     const json = await data.json()
-    if (json?.items.length === 0) {
-      setError(true)
-      return
-    }
+    // if (json?.items.length === 0) {
+    //   setError(true)
+    //   return
+    // }
 
     if (json.hasOwnProperty("items")) {
       const data = await fetch(YOUTUBE_CHANNELS + json?.items["0"].snippet?.channelId, {
