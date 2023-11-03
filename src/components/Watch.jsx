@@ -19,7 +19,7 @@ const Watch = () => {
 
   useEffect(() => {
     // fetchVideosComments()
-    fetchVideoDetails()
+    //fetchVideoDetails()
     dispatch(watchMode(false))
 
     return () => {
@@ -84,7 +84,7 @@ const Watch = () => {
             playbackRate={1}
           />
         </div>
-       { videoDetail ? (
+       {/* { videoDetail ? (
         <div className="pb-10">
           <p className='font-bold md:text-2xl sm:text-sm mt-3 pl-1 pb-3 dark:text-gray-100'>{videoDetail?.snippet?.localized?.title}</p>
           <div className='flex justify-between'>
@@ -115,7 +115,7 @@ const Watch = () => {
           <div className='w-full bg-gray-200 h-1/2 mt-5 rounded-md dark:bg-zinc-700'>
             <p className='p-5 sm:text-sm dark:text-gray-100'>{textToHtml(videoDetail?.snippet?.localized?.description)}</p>
           </div>
-        </div>) : null }
+        </div>) : null } */}
         {/* <div>Comments</div> */}
       </div>
       <div className='flex'>
