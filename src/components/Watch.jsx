@@ -15,9 +15,10 @@ const Watch = () => {
   const [channelDetails, setchannelDetails] = useState(null)
   const [query, setQuery] = useState("")
   const [error, setError] = useState(false)
+  const [errMsg, setErrMsg] = useState("")
   const dispatch = useDispatch()
   const [searchParams,] = useSearchParams()
-  
+
   useEffect(() => {
     setQuery((searchParams.size > 0) ? searchParams.get("v") : "")
     fetchVideosComments()
@@ -39,24 +40,28 @@ const Watch = () => {
   }
 
   const fetchVideoDetails = async (query) => {
-    const data = await fetch(YOUTUBE_VIDEO_DETAILS + query)
-    const json = await data.json()
-    // if (json?.items.length === 0) {
-    //   setError(true)
-    //   return
-    // }
+    try {
+      const data = await fetch(YOUTUBE_VIDEO_DETAILS + query)
+      const json = await data.json()
+      if (json?.items.length === 0) {
+        setError(true)
+        return
+      }
 
-    if (json.hasOwnProperty("items")) {
-      const data = await fetch(YOUTUBE_CHANNELS + json?.items["0"].snippet?.channelId, {
-        method: 'GET',
-        headers: {
-          'X-RapidAPI-Key': '0520fb6ea1msh347b8e851e21aabp1021edjsnec0ba11b7f89',
-          'X-RapidAPI-Host': 'youtube-search-and-download.p.rapidapi.com'
-        }
-      })
-      const j = await data.json()
-      setchannelDetails(j)
-      setvideoDetails(json.items[0])
+      if (json.hasOwnProperty("items")) {
+        const data = await fetch(YOUTUBE_CHANNELS + json?.items["0"].snippet?.channelId, {
+          method: 'GET',
+          headers: {
+            'X-RapidAPI-Key': '0520fb6ea1msh347b8e851e21aabp1021edjsnec0ba11b7f89',
+            'X-RapidAPI-Host': 'youtube-search-and-download.p.rapidapi.com'
+          }
+        })
+        const j = await data.json()
+        setchannelDetails(j)
+        setvideoDetails(json.items[0])
+      }
+    }catch(e){
+      setErrMsg(JSON.stringify(e))
     }
   }
 
@@ -69,6 +74,7 @@ const Watch = () => {
   if (error) {
     return <div className='flex justify-center w-screen h-[80vh]'>
       <div className='flex items-center text-3xl font-bold'>This video isn't available anymore</div>
+      <div className='flex items-center text-3xl font-bold'>{errMsg}</div>
     </div>
   }
 
@@ -86,38 +92,38 @@ const Watch = () => {
             playbackRate={1}
           />
         </div>
-       { videoDetail ? (
-        <div className="pb-10">
-          <p className='font-bold md:text-2xl sm:text-sm mt-3 pl-1 pb-3 dark:text-gray-100'>{videoDetail?.snippet?.localized?.title}</p>
-          <div className='flex justify-between'>
-            <div className='flex'>
-              <div>
-                <div><img className="rounded-full w-12" src={channelDetails?.avatar?.thumbnails[0]?.url} /></div>
-              </div>
-              <div>
-                <div className='flex'>
-                  <div className='md:text-xl sm:text-sm font-medium px-2 dark:text-gray-100'>{videoDetail?.snippet?.channelTitle}</div>
-                  <div className='flex items-center dark:text-gray-100'>{channelDetails?.verified ? <BsFillCheckCircleFill /> : null}</div>
+        {videoDetail ? (
+          <div className="pb-10">
+            <p className='font-bold md:text-2xl sm:text-sm mt-3 pl-1 pb-3 dark:text-gray-100'>{videoDetail?.snippet?.localized?.title}</p>
+            <div className='flex justify-between'>
+              <div className='flex'>
+                <div>
+                  <div><img className="rounded-full w-12" src={channelDetails?.avatar?.thumbnails[0]?.url} /></div>
                 </div>
-                <div className='text-sm font-light px-2 dark:text-gray-100'>{channelDetails?.subscriberCountText}</div>
+                <div>
+                  <div className='flex'>
+                    <div className='md:text-xl sm:text-sm font-medium px-2 dark:text-gray-100'>{videoDetail?.snippet?.channelTitle}</div>
+                    <div className='flex items-center dark:text-gray-100'>{channelDetails?.verified ? <BsFillCheckCircleFill /> : null}</div>
+                  </div>
+                  <div className='text-sm font-light px-2 dark:text-gray-100'>{channelDetails?.subscriberCountText}</div>
+                </div>
+              </div>
+              <div className='flex'>
+                <div className={`flex px-4 py-2 rounded-l-full bg-slate-100 border border-stone-400 h-10 dark:text-gray-100 dark:bg-[${DARK_MODE_CODE}]`}>
+                  <BiLike size={25} className='dark:text-white' />
+                  <div>{formatNumber(videoDetail?.statistics?.likeCount, 0)}</div>
+                </div>
+                <div className={`flex px-4 py-2 rounded-r-full bg-slate-100 border border-stone-400 h-10 dark:text-gray-100 dark:bg-[${DARK_MODE_CODE}]`}>
+                  <BiDislike size={25} className='dark:text-white' />
+                </div>
               </div>
             </div>
-            <div className='flex'>
-              <div className={`flex px-4 py-2 rounded-l-full bg-slate-100 border border-stone-400 h-10 dark:text-gray-100 dark:bg-[${DARK_MODE_CODE}]`}>
-                <BiLike size={25} className='dark:text-white' />
-                <div>{formatNumber(videoDetail?.statistics?.likeCount, 0)}</div>
-              </div>
-              <div className={`flex px-4 py-2 rounded-r-full bg-slate-100 border border-stone-400 h-10 dark:text-gray-100 dark:bg-[${DARK_MODE_CODE}]`}>
-                <BiDislike size={25} className='dark:text-white'/>
-              </div>
+
+
+            <div className='w-full bg-gray-200 h-1/2 mt-5 rounded-md dark:bg-zinc-700'>
+              <p className='p-5 sm:text-sm dark:text-gray-100'>{textToHtml(videoDetail?.snippet?.localized?.description)}</p>
             </div>
-          </div>
-
-
-          <div className='w-full bg-gray-200 h-1/2 mt-5 rounded-md dark:bg-zinc-700'>
-            <p className='p-5 sm:text-sm dark:text-gray-100'>{textToHtml(videoDetail?.snippet?.localized?.description)}</p>
-          </div>
-        </div>) : null }
+          </div>) : null}
         {/* <div>Comments</div> */}
       </div>
       <div className='flex'>
