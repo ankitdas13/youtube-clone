@@ -6,6 +6,7 @@ import { BiLike, BiDislike } from "react-icons/bi"
 import { useDispatch } from "react-redux"
 import { watchMode } from '../Context/SidebarSlice'
 import { formatNumber } from '../utils/helper'
+import { useSearchParams } from 'react-router-dom'
 
 const Watch = () => {
 
@@ -14,8 +15,8 @@ const Watch = () => {
   const [channelDetails, setchannelDetails] = useState(null)
   const [error, setError] = useState(false)
   const dispatch = useDispatch()
-  const url = new URLSearchParams(document.location.search)
-  const query = (url.size > 0) ? url.get("v") : ""
+  const [searchParams,] = useSearchParams()
+  const query = (searchParams.size > 0) ? searchParams.get("v") : ""
 
   useEffect(() => {
     fetchVideosComments()
