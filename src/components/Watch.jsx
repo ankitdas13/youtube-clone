@@ -13,12 +13,13 @@ const Watch = () => {
   const [commentList, setcommentList] = useState([])
   const [videoDetail, setvideoDetails] = useState(null)
   const [channelDetails, setchannelDetails] = useState(null)
+  const [query, setQuery] = useState("")
   const [error, setError] = useState(false)
   const dispatch = useDispatch()
   const [searchParams,] = useSearchParams()
-  const query = (searchParams.size > 0) ? searchParams.get("v") : ""
-
+  
   useEffect(() => {
+    setQuery((searchParams.size > 0) ? searchParams.get("v") : "")
     fetchVideosComments()
     fetchVideoDetails()
     dispatch(watchMode(false))
@@ -28,7 +29,7 @@ const Watch = () => {
     }
   }, [])
 
-  const fetchVideosComments = async () => {
+  const fetchVideosComments = async (query) => {
     const data = await fetch(YOUTUBE_PARENT_COMMENTS + query)
     const json = await data.json()
     if (json.hasOwnProperty("items")) {
@@ -37,7 +38,7 @@ const Watch = () => {
     }
   }
 
-  const fetchVideoDetails = async () => {
+  const fetchVideoDetails = async (query) => {
     const data = await fetch(YOUTUBE_VIDEO_DETAILS + query)
     const json = await data.json()
     if (json?.items.length === 0) {
@@ -75,7 +76,7 @@ const Watch = () => {
     <div className='flex md:ml-10'>
       <div className='mt-10'>
         <div className='relative aspect-video md:w-[1200px]'>
-          {/* <ReactPlayer
+          <ReactPlayer
             url={`https://www.youtube.com/watch?v=${query}`}
             playing={true}
             controls={true}
@@ -83,21 +84,7 @@ const Watch = () => {
             width='100%'
             height='100%'
             playbackRate={1}
-          /> */}
-          <iframe 
-            width='100%'
-            height='100%'
-            src={`https://www.youtube.com/embed/${query}`}
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; 
-            autoplay; 
-            clipboard-write; 
-            encrypted-media; 
-            gyroscope; 
-            picture-in-picture; 
-            web-share">
-           </iframe>
+          />
         </div>
        { videoDetail ? (
         <div className="pb-10">
