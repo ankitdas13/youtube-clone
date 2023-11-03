@@ -75,7 +75,7 @@ const Watch = () => {
     <div className='flex md:ml-10'>
       <div className='mt-10'>
         <div className='relative aspect-video md:w-[1200px]'>
-          <ReactPlayer
+          {/* <ReactPlayer
             url={`https://www.youtube.com/watch?v=${query}`}
             playing={true}
             controls={true}
@@ -83,7 +83,21 @@ const Watch = () => {
             width='100%'
             height='100%'
             playbackRate={1}
-          />
+          /> */}
+          <iframe 
+            width='100%'
+            height='100%'
+            src={`https://www.youtube.com/embed/${query}`}
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; 
+            autoplay; 
+            clipboard-write; 
+            encrypted-media; 
+            gyroscope; 
+            picture-in-picture; 
+            web-share">
+           </iframe>
         </div>
        { videoDetail ? (
         <div className="pb-10">
